@@ -7,7 +7,7 @@ const jwt= require('jsonwebtoken');
 const dotenv=require ('dotenv');
 // reads the .env file and loads the variables into process .env 
 dotenv.config();
-
+const fetchuser=require('../middleware/fetchuser');
 
 
 
@@ -88,6 +88,19 @@ router.post('/',
     res.status(500).send("Internal server error");
   }
 
+  // getting the data of the user using the token 
+  router.post('/getuser',fetchuser,async(req,res)=>{
+    try{
+     const userid=req.user.id;
+     console.log(userid);
+     const user= await User.findById(userid).select("-password");
+   
+     res.send(user);
+  }catch(err){
+       console.error(err.message);
+    res.status(500).send("Internal server error");
+  }
+  })
    
 
 
