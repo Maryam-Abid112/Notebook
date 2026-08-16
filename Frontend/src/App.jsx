@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import About from './Components/About'
 import Navbar from './Components/Navbar'
 import Notestate from './context/notes/Notestate'
+import Alert from './Components/Alert'
 
   
 function App() {
