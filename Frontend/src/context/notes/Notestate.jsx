@@ -1,59 +1,24 @@
 import NoteContext from "./notecontext";
-import react from "react";
+import react, { useEffect } from "react";
 import { useState } from "react";
 import axios from 'axios';
 
-const Notestate=(props)=>{
-    const noteadd=[
-  {
-    "_id": "6a7d89f08a14f1cad3033270",
-    "title": "Work",
-    "Description": "please complete this work",
-    "user": "6a72f29e22afccd53da77a4b",
-    "date": "2026-08-13T09:10:08.412Z",
-    "__v": 0
-  },
-  {
-    "_id": "6a7d89f08a14f1cad3033273",
-    "title": "Work",
-    "Description": "please complete this work",
-    "user": "6a72f29e22afccd53da77a4b",
-    "date": "2026-08-13T09:10:08.412Z",
-    "__v": 0
-  },
-  {
-    "_id": "6a7d89f08a14f1cad3033277",
-    "title": "Work",
-    "Description": "please complete this work",
-    "user": "6a72f29e22afccd53da77a4b",
-    "date": "2026-08-13T09:10:08.412Z",
-    "__v": 0
-  },
-  {
-    "_id": "6a7d89f08a14f1cad3033278",
-    "title": "Work",
-    "Description": "please complete this work",
-    "user": "6a72f29e22afccd53da77a4b",
-    "date": "2026-08-13T09:10:08.412Z",
-    "__v": 0
-  },
-   {
-    "_id": "6a7d89f08a14f1cad3033271",
-    "title": "Beat",
-    "Description": "please complete this work",
-    "user": "6a72f29e22afccd53da77a4b",
-    "date": "2026-08-13T09:10:08.412Z",
-    "__v": 0
-  }
-]
 
-const [notes,setNotes]=useState(noteadd);
+
+
+const Notestate=(props)=>{
+  const host= import.meta.env.VITE_API_URL;
+  const [Notes,setNotes]=useState([]);
+
+    useEffect(()=>{
+      fetchapi();
+    },[])
 
 const addnote=async(title,description,tag)=>{
   console.log("Adding a new note");
   //api call
   try{
-  const response=await axios.post("http://localhost:3000/api/notes/addnote",{
+  const response=await axios.post(`${host}/api/notes/addnote`,{
     title,
     description,
     tag
@@ -61,47 +26,91 @@ const addnote=async(title,description,tag)=>{
   {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njg0MDE1NSwiZXhwIjoxNzg2ODQzNzU1fQ.a3sJWgAQXA-B0hX-o_RPgagBUG-KFZ1CyP8O1XBPRFs"
+      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4NjkyNzY3MCwiZXhwIjoxNzg2OTMxMjcwfQ.Vw9ldLyUITUhmdU1KRsK5mCv-SLdgN4p2oWRzD81qF8"
     }
   });
 
   console.log(response);
+  setNotes(prevNotes => prevNotes.concat(response.data));
   console.log("notes added");
+
 }catch(err){
   console.log("Error ",err);
 }
 
 }
-const deletenote=(noteid)=>{
+const deletenote=async(noteid)=>{
 
   console.log("Deleting note");
   // api call
-  const newnotes=notes.filter((notes)=>{
-     return notes._id!=noteid
-   })
-  
-   setNotes(newnotes);
- 
-}
-const editnote=(id, title, description,tag)=>{
-   console.log("Editing the note");
-
-   const edit=notes.map((note)=>{
-    if(note._id==id){
-      return{
-        ...note,
-      Description:description,
-      title:title
-      }
-
+  try{
+  const response=await axios.delete(`${host}/api/notes/delete/${noteid}`, {
+    headers: {
+      "Content-Type":"application/json",
+      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4NjkyNzY3MCwiZXhwIjoxNzg2OTMxMjcwfQ.Vw9ldLyUITUhmdU1KRsK5mCv-SLdgN4p2oWRzD81qF8"
     }
-   });
-   setNotes(edit);
+  });
+
+  console.log(response);
+  const updatednotes=(prevnotes)=>{
+   return  prevnotes.filter(note=>note._id!=noteid)
+
+  };
+
+  setNotes(updatednotes);
+  console.log("Note deleted");
+
+}catch(err){
+  console.log("Error ",err);
+}
 
 
 }
+const editnote=async(id, title, description,tag)=>{
+
+   console.log("Editing the note");
+   try{
+  const response=await axios.post(`${host}/api/notes/updatenote/${id}`,
+    {
+    title,
+    description,
+    tag
+  }, {
+    headers: {
+      "Content-Type":"application/json",
+      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4NjkyNzY3MCwiZXhwIjoxNzg2OTMxMjcwfQ.Vw9ldLyUITUhmdU1KRsK5mCv-SLdgN4p2oWRzD81qF8"
+    }
+  });
+
+  console.log(response);
+  console.log("Note updated");
+}catch(err){
+  console.log("Error ",err);
+}
+}
+const fetchapi=async()=>{
+   try{
+  const response=await axios.get(`${host}/api/notes/fetchallnotes`,
+    {
+    headers: {
+      "Content-Type":"application/json",
+      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4NjkyNzY3MCwiZXhwIjoxNzg2OTMxMjcwfQ.Vw9ldLyUITUhmdU1KRsK5mCv-SLdgN4p2oWRzD81qF8"
+    }
+  });
+
+  setNotes(response.data);
+  console.log(response.data);
+  console.log("Notes fetched");
+
+}catch(err){
+  console.log("Error ",err);
+}
+}
+
+
     return(
-        <NoteContext.Provider value={{notes,addnote,deletenote,editnote}}>
+      // it tells whcich can access the data or function and which data 
+        <NoteContext.Provider value={{addnote,deletenote,editnote,Notes}}>
             {props.children}
         </NoteContext.Provider>
     )

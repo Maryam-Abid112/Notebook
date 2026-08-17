@@ -6,13 +6,13 @@ import Addnote from './Addnote';
 
 export default function Notes() {
      const a = useContext(NoteContext);
-  const {notes} = a;
+  const {Notes} = a;
   return (
     <>
    
       <div className='row my-3'>
         <h2>My Notes</h2>
-        {notes.map((note) => {
+        {Notes.map((note) => {
            return <Noteitem  key={note._id} note={note}/>
 
 })}
