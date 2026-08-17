@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
 
-     <Addnote />
+     
       <div className='container my-3'>
              <Notes />
            </div>

@@ -26,7 +26,7 @@ const addnote=async(title,description,tag)=>{
   {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4NjkyNzY3MCwiZXhwIjoxNzg2OTMxMjcwfQ.Vw9ldLyUITUhmdU1KRsK5mCv-SLdgN4p2oWRzD81qF8"
+      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njk1Nzk2NywiZXhwIjoxNzg2OTYxNTY3fQ.o0UXAppFD--KGTpLmR_JyGybz8vWuABuhekQ3PItR18"
     }
   });
 
@@ -47,10 +47,9 @@ const deletenote=async(noteid)=>{
   const response=await axios.delete(`${host}/api/notes/delete/${noteid}`, {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4NjkyNzY3MCwiZXhwIjoxNzg2OTMxMjcwfQ.Vw9ldLyUITUhmdU1KRsK5mCv-SLdgN4p2oWRzD81qF8"
-    }
-  });
-
+      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njk1Nzk2NywiZXhwIjoxNzg2OTYxNTY3fQ.o0UXAppFD--KGTpLmR_JyGybz8vWuABuhekQ3PItR18"
+    }});
+    
   console.log(response);
   const updatednotes=(prevnotes)=>{
    return  prevnotes.filter(note=>note._id!=noteid)
@@ -78,12 +77,18 @@ const editnote=async(id, title, description,tag)=>{
   }, {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4NjkyNzY3MCwiZXhwIjoxNzg2OTMxMjcwfQ.Vw9ldLyUITUhmdU1KRsK5mCv-SLdgN4p2oWRzD81qF8"
+      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njk1Nzk2NywiZXhwIjoxNzg2OTYxNTY3fQ.o0UXAppFD--KGTpLmR_JyGybz8vWuABuhekQ3PItR18"
     }
   });
 
+  setNotes(prevNotes =>
+            prevNotes.map(note =>
+                note._id === id ? response.data : note
+            )
+        );
   console.log(response);
   console.log("Note updated");
+
 }catch(err){
   console.log("Error ",err);
 }
@@ -94,7 +99,7 @@ const fetchapi=async()=>{
     {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4NjkyNzY3MCwiZXhwIjoxNzg2OTMxMjcwfQ.Vw9ldLyUITUhmdU1KRsK5mCv-SLdgN4p2oWRzD81qF8"
+      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njk1Nzk2NywiZXhwIjoxNzg2OTYxNTY3fQ.o0UXAppFD--KGTpLmR_JyGybz8vWuABuhekQ3PItR18"
     }
   });
 
