@@ -37,11 +37,11 @@ export default function Notes() {
         <form>
           <div className="mb-3">
             <label htmlFor="title" className="form-label">Title</label>
-            <input type="text" className="form-control" id="title" aria-describedby="emailHelp" onChange={(e)=>{settitle(e.target.value)}}/>
+            <input type="text" className="form-control" id="title" aria-describedby="emailHelp" onChange={(e)=>{settitle(e.target.value)}} minLength={5} required/>
           </div>
           <div className="mb-3">
             <label htmlFor="desc" className="form-label">Description</label>
-            <input type="text" className="form-control" id="desc" onChange={(e)=>{setdescription(e.target.value)}} />
+            <input type="text" className="form-control" id="desc" onChange={(e)=>{setdescription(e.target.value)}} minLength={5} required />
           </div>
           <div className="mb-3">
             <label htmlFor="tag" className="form-label">Tags</label>
@@ -53,13 +53,16 @@ export default function Notes() {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary" onClick={handleclick}>Update Note</button>
+        <button type="button" disabled={title.length<5 || description.length<5} className="btn btn-primary" onClick={handleclick}>Update Note</button>
       </div>
     </div>
   </div>
 </div>
       <div className='row my-3'>
         <h2>My Notes</h2>
+        <div className='container'>
+          {Notes.length==0 ?'No notes to display':''}
+        </div>
         {Notes.map((note) => {
            return <Noteitem  key={note._id} updatenote={Update}  note={note}/>
 

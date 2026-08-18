@@ -23,17 +23,17 @@ export default function Addnote() {
         <form>
           <div className="mb-3">
             <label htmlFor="title" className="form-label">Title</label>
-            <input type="text" className="form-control" id="title" aria-describedby="emailHelp" onChange={(e)=>{settitle(e.target.value)}}/>
+            <input type="text" className="form-control" id="title" aria-describedby="emailHelp" onChange={(e)=>{settitle(e.target.value)} } required/>
           </div>
           <div className="mb-3">
             <label htmlFor="desc" className="form-label">Description</label>
-            <input type="text" className="form-control" id="desc" onChange={(e)=>{setdescription(e.target.value)}} />
+            <input type="text" className="form-control" id="desc" onChange={(e)=>{setdescription(e.target.value)} }minLength={5} required />
           </div>
           <div className="mb-3">
             <label htmlFor="tag" className="form-label">Tags</label>
             <input type="text" className="form-control" id="tag" onChange={(e)=>{settag(e.target.value)}} />
           </div>
-          <button type="submit" className="btn btn-primary" onClick={handleclick}>Submit</button>
+          <button  disabled={title<5 || description.length<5}type="submit" className="btn btn-primary" onClick={handleclick}>Submit</button>
         </form>
 
       </div>

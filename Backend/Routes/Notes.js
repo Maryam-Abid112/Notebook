@@ -39,7 +39,7 @@ router.post('/addnote',[
         user:user
     });
 
-    res.json(newnote);
+    res.send("Notes created");
 }catch(err){
     console.error(err.message);
     res.status(500).send("Internal server error");  }
@@ -71,7 +71,7 @@ router.post('/updatenote/:id',fetchuser,async(req,res)=>{
         }
         
         updatenote= await note.findByIdAndUpdate(noteid,{$set:newnote},{new:true});
-        res.json(updatenote);
+        res.send("Note updated");
     }catch(err){
             console.error(err.message);
             res.status(500).send("Internal server error");

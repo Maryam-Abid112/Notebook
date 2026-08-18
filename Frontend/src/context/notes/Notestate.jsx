@@ -26,13 +26,13 @@ const addnote=async(title,description,tag)=>{
   {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njk1Nzk2NywiZXhwIjoxNzg2OTYxNTY3fQ.o0UXAppFD--KGTpLmR_JyGybz8vWuABuhekQ3PItR18"
+      "auth-token":localStorage.getItem("token")
     }
   });
 
   console.log(response);
   setNotes(prevNotes => prevNotes.concat(response.data));
-  console.log("notes added");
+  
 
 }catch(err){
   console.log("Error ",err);
@@ -47,7 +47,7 @@ const deletenote=async(noteid)=>{
   const response=await axios.delete(`${host}/api/notes/delete/${noteid}`, {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njk1Nzk2NywiZXhwIjoxNzg2OTYxNTY3fQ.o0UXAppFD--KGTpLmR_JyGybz8vWuABuhekQ3PItR18"
+      "auth-token":localStorage.getItem("token")
     }});
     
   console.log(response);
@@ -57,7 +57,7 @@ const deletenote=async(noteid)=>{
   };
 
   setNotes(updatednotes);
-  console.log("Note deleted");
+ 
 
 }catch(err){
   console.log("Error ",err);
@@ -77,7 +77,7 @@ const editnote=async(id, title, description,tag)=>{
   }, {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njk1Nzk2NywiZXhwIjoxNzg2OTYxNTY3fQ.o0UXAppFD--KGTpLmR_JyGybz8vWuABuhekQ3PItR18"
+      "auth-token":localStorage.getItem("token")
     }
   });
 
@@ -87,7 +87,7 @@ const editnote=async(id, title, description,tag)=>{
             )
         );
   console.log(response);
-  console.log("Note updated");
+
 
 }catch(err){
   console.log("Error ",err);
@@ -99,13 +99,13 @@ const fetchapi=async()=>{
     {
     headers: {
       "Content-Type":"application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzJmMjllMjJhZmNjZDUzZGE3N2E0YiIsImlhdCI6MTc4Njk1Nzk2NywiZXhwIjoxNzg2OTYxNTY3fQ.o0UXAppFD--KGTpLmR_JyGybz8vWuABuhekQ3PItR18"
+      "auth-token":localStorage.getItem("token")
     }
   });
 
   setNotes(response.data);
-  console.log(response.data);
-  console.log("Notes fetched");
+ 
+  
 
 }catch(err){
   console.log("Error ",err);
