@@ -12,7 +12,7 @@ const fetchuser=require('../middleware/fetchuser');
 
 
 // post req for sending data to the server(creating a user)
-router.post('/',
+router.post('/createuser',
   // adding validation
   [
     body('name', 'Name must be at least 3 characters long').isLength({ min: 3 }),
@@ -28,7 +28,7 @@ router.post('/',
 
     console.log(req.body)
     // used for creating a token for user authentification
-    const token=jwt.sign({id:req.body.id},secretKey,{expiresIn:"1h"});
+   
 
     
     // creating a salt for hashing password 
@@ -44,8 +44,9 @@ router.post('/',
       password: pasword
     });
 
+     const token=jwt.sign({id:user._id},secretKey,{expiresIn:"1h"});
     // sending the token to the user
-    res.send(token)
+    res.json({token});
 
 
 
