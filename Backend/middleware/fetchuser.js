@@ -10,7 +10,6 @@ const fetchuser=(req,res,next)=>{
       }
       try{
         const data=jwt.verify(token, process.env.secretkey);
-        console.log(data);
         req.user=data;
         
         next();

@@ -30,7 +30,7 @@ export default function () {
             const responsedata = response.data;
             localStorage.setItem("token", responsedata.token);
             setToken(response.data.token);
-            navigate("/");
+            navigate("/Notes");
            
         } catch (err) {
             console.log("Error:", err.response?.data);

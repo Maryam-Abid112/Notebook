@@ -2,6 +2,7 @@ import NoteContext from "./notecontext";
 import react, { useEffect } from "react";
 import { useState } from "react";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -10,6 +11,7 @@ const Notestate=(props)=>{
   const host= import.meta.env.VITE_API_URL;
   const [Notes,setNotes]=useState([]);
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const navigate = useNavigate();
 
 useEffect(() => {
   if (token) {
@@ -55,7 +57,7 @@ const deletenote=async(noteid)=>{
       "auth-token":token
     }});
     
-  console.log(response);
+  
   const updatednotes=(prevnotes)=>{
    return  prevnotes.filter(note=>note._id!=noteid)
 
@@ -91,7 +93,7 @@ const editnote=async(id, title, description,tag)=>{
                 note._id === id ? response.data : note
             )
         );
-  console.log(response);
+  
 
 
 }catch(err){
@@ -113,14 +115,20 @@ const fetchapi=async()=>{
   
 
 }catch(err){
-  console.log("Error ",err);
+    if (err.response?.status === 401) {
+      localStorage.removeItem("token");
+      setToken(null);
+      navigate("/login");
+    } else {
+      console.log("Error:", err);
+    }
 }
 }
 
 
     return(
       // it tells whcich can access the data or function and which data 
-        <NoteContext.Provider value={{addnote,deletenote,editnote,Notes,fetchapi,setToken}}>
+        <NoteContext.Provider value={{addnote,deletenote,editnote,Notes,fetchapi,setToken,token}}>
             {props.children}
         </NoteContext.Provider>
     )

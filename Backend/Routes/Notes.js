@@ -59,7 +59,7 @@ router.post('/updatenote/:id',fetchuser,async(req,res)=>{
         // finding the note to be updated
         const noteid=req.params.id;
         const notes= await note.findById(noteid);
-        console.log(notes);
+        
 
          // checking note exists or not
         if(!notes){

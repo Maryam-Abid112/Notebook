@@ -1,9 +1,19 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
+import { Link, useNavigate } from "react-router-dom";
+import NoteContext from "../context/notes/notecontext";
 
 export default function Navbar() {
+    const { token, setToken } = useContext(NoteContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setToken(null);
+        navigate("/");
+    };
+
     let location = useLocation();
     useEffect(() => {
         console.log(location.pathname);
@@ -32,10 +42,35 @@ export default function Navbar() {
                                     </Link>
                                 </li>
                             </ul>
-                            <form className="d-flex" role="search">
+                            <form className="d-flex" >
 
-                                <Link className='btn btn-primary mx-2' to="/login" role="button">Login</Link>
-                                <Link  className='btn btn-primary mx-2' to="/signup" role="button">Signup</Link>
+                                {token ? (
+                                    <>
+
+                                        <button
+                                            onClick={handleLogout}
+                                            className="btn btn-danger"
+                                        >
+                                            Logout
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link
+                                            to="/login"
+                                            className="btn btn-outline-primary me-2"
+                                        >
+                                            Login
+                                        </Link>
+
+                                        <Link
+                                            to="/signup"
+                                            className="btn btn-primary"
+                                        >
+                                            Sign Up
+                                        </Link>
+                                    </>
+                                )}
 
                             </form>
                         </div>
