@@ -1,6 +1,9 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import NoteContext from "../context/notes/notecontext";
 
 
 
@@ -9,6 +12,8 @@ export default function () {
         const [email, setemail] = useState("");
         const [password, setpassword] = useState("");
         const [name,setname]=useState("");
+        const { setToken } = useContext(NoteContext);
+        const navigate=useNavigate();
         const handleclick = async (e) => {
             console.log("Signup")
             e.preventDefault();
@@ -25,13 +30,27 @@ export default function () {
                     }
                 });
                 const responsedata = response.data;
-                localStorage.setItem("token",responsedata.token)
+                localStorage.setItem("token",responsedata.token);
+                setToken(response.data.token);
+                navigate("/");
     
     
             } catch (err) {
-                console.log("Error:", err.response?.data);
+                if(err.response?.status==400){
+                    alert("User already exist");
+                }else{
+                    console.log("Error",err.response.data);
+                }
+               
+
             }
+
+            setemail("")
+            setname("")
+            setpassword("")
         }
+
+
     
     return (
         <>

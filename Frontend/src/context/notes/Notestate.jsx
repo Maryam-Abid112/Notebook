@@ -9,10 +9,15 @@ import axios from 'axios';
 const Notestate=(props)=>{
   const host= import.meta.env.VITE_API_URL;
   const [Notes,setNotes]=useState([]);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
-    useEffect(()=>{
-      fetchapi();
-    },[])
+useEffect(() => {
+  if (token) {
+    fetchapi();
+  } else {
+    setNotes([]);
+  }
+}, [token]);
 
 const addnote=async(title,description,tag)=>{
   console.log("Adding a new note");
@@ -26,11 +31,11 @@ const addnote=async(title,description,tag)=>{
   {
     headers: {
       "Content-Type":"application/json",
-      "auth-token":localStorage.getItem("token")
+      "auth-token":token
     }
   });
 
-  console.log(response);
+  console.log("Addnote response"+response);
   setNotes(prevNotes => prevNotes.concat(response.data));
   
 
@@ -47,7 +52,7 @@ const deletenote=async(noteid)=>{
   const response=await axios.delete(`${host}/api/notes/delete/${noteid}`, {
     headers: {
       "Content-Type":"application/json",
-      "auth-token":localStorage.getItem("token")
+      "auth-token":token
     }});
     
   console.log(response);
@@ -77,7 +82,7 @@ const editnote=async(id, title, description,tag)=>{
   }, {
     headers: {
       "Content-Type":"application/json",
-      "auth-token":localStorage.getItem("token")
+      "auth-token":token
     }
   });
 
@@ -99,7 +104,7 @@ const fetchapi=async()=>{
     {
     headers: {
       "Content-Type":"application/json",
-      "auth-token":localStorage.getItem("token")
+      "auth-token":token
     }
   });
 
@@ -115,7 +120,7 @@ const fetchapi=async()=>{
 
     return(
       // it tells whcich can access the data or function and which data 
-        <NoteContext.Provider value={{addnote,deletenote,editnote,Notes}}>
+        <NoteContext.Provider value={{addnote,deletenote,editnote,Notes,fetchapi,setToken}}>
             {props.children}
         </NoteContext.Provider>
     )
